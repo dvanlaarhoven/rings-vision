@@ -4,7 +4,7 @@ Computer vision tool for analysing Still Rings technique from training footage.
 
 ## Status
 
-Early development. The initial OpenCV image-loading pipeline is complete, with MediaPipe pose detection as the next milestone
+Early development. The initial OpenCV image-loading pipeline is complete, with MediaPipe static pose detection working
 
 ## Planned MVP
 
