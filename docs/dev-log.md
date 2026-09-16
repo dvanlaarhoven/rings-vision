@@ -18,6 +18,9 @@ Establish the project structure and create a reliable image-loading pipeline bef
 * Reorganised the project directories
 * Replaced the machine-specific image path with a portable `pathlib` path
 * Connected the local project to the existing GitHub repository
+* Integrated the MediaPipe Tasks Pose Landmarker with the Full model
+* Refactored image loading and pose detection into separate functions
+* Converted normalised landmark coordinates into image-pixel coordinates
 
 ### Technical Decisions
 
@@ -25,11 +28,18 @@ Establish the project structure and create a reliable image-loading pipeline bef
 * `pathlib` constructs the image path relative to the project folder instead of relying on a machine-specific absolute path
 * Sample media is excluded from Git because its redistribution rights have not been confirmed
 * Image loading is checked first because `cv2.imread()` returns `None` when it fails, which would cause later image operations to produce errors
+* Used IMAGE running mode because the current input is a static image
+* Kept the downloaded model outside Git while storing its path relative to the project
+* Used MediaPipe’s official pose connections rather than defining the skeleton manually
+* Drew on a copy to preserve the original image
+* Drew lines before points so landmarks remain visible
 
 ### Testing
 
 * Valid filename: the image loaded, its dimensions were printed and the display window opened
 * Invalid filename: a descriptive error appeared and the program ended without crashing
+* Detected one pose and retrieved 33 landmarks from the test image
+* Visually confirmed that the detected landmarks and connections follow the gymnast’s pose
 
 ### Problems and Resolutions
 
@@ -49,4 +59,4 @@ Establish the project structure and create a reliable image-loading pipeline bef
 
 ### Next Step
 
-Integrate MediaPipe and detect pose landmarks on the static Iron Cross image.
+Extract the shoulder, elbow and wrist landmarks and calculate the elbow angles for both arms.

@@ -50,6 +50,49 @@ def detect_pose_landmarks(image_rgb, model_path: Path):
         return landmarker.detect(mp_image)
 
 
+def draw_pose_landmarks(image, pose_landmarks):
+    annotated_image = image.copy()
+
+    height, width = annotated_image.shape[:2]
+    connections = vision.PoseLandmarksConnections.POSE_LANDMARKS
+
+    for connection in connections:
+            start_landmark = pose_landmarks[connection.start]
+            end_landmark = pose_landmarks[connection.end]
+
+            start_point = (
+                        int(start_landmark.x * width),
+                        int(start_landmark.y * height),
+                        )
+
+            end_point = (
+                int(end_landmark.x * width),
+                int(end_landmark.y * height),
+                )
+
+            cv2.line(
+                annotated_image,
+                start_point,
+                end_point,
+                (0, 0, 255),
+                2,
+                )
+
+    for landmark in pose_landmarks:
+        pixel_x = int(landmark.x * width)
+        pixel_y = int(landmark.y * height)
+
+        cv2.circle(
+            annotated_image,
+            (pixel_x, pixel_y),
+            4,
+            (0, 255, 0),
+            -1,
+            )
+
+    return annotated_image
+
+
 def main():
     try:
         iron_cross = load_image(IMAGE_PATH)
@@ -72,6 +115,13 @@ def main():
         landmark_count = len(pose_result.pose_landmarks[0])
         print(f"Landmarks detected: {landmark_count}")
 
+        annotated_image = draw_pose_landmarks(
+            iron_cross,
+            pose_result.pose_landmarks[0],
+        )
+    else:
+        annotated_image = iron_cross.copy()
+
     height, width, channels = iron_cross.shape
 
     print(f"Height: {height}")
@@ -79,7 +129,10 @@ def main():
     print(f"Channels: {channels}")
 
     # Display the iron cross image in a window
-    cv2.imshow("Iron Cross Exemplar", iron_cross)
+    cv2.imshow(
+        "Iron Cross Pose Landmarks",
+        annotated_image,
+    )
 
     print(
         f"Successfully loaded an image with dimensions "

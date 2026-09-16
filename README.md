@@ -1,10 +1,10 @@
 # RingsVision
 
-Computer vision tool for analysing Still Rings technique from training footage.
+Computer vision tool for analysing Men's Artistic Gymnastics (MAG) Still Rings technique from training footage.
 
 ## Status
 
-Early development. The initial OpenCV image-loading pipeline is complete, with MediaPipe static pose detection working
+RingsVision is currently in early development and can detect and visualise 33 pose landmarks from a validated static image using MediaPipe
 
 ## Planned MVP
 
